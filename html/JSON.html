@@ -1,0 +1,855 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>JSON</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-07-09"><meta name="DC.source" content="JSON.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>JSON</h1><!--introduction--><p><tt style="font-size:0%">Formatted documentation for the JSON function.</tt>
+<div style="margin-top:-5em;color:grey">This interprets char array as JSON and returns an object the same size and shape as the builtin.
+</div>
+</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Description</a></li><li><a href="#2">Syntax</a></li><li><a href="#3">Output arguments</a></li><li><a href="#4">Input arguments</a></li><li><a href="#5">Name,Value pairs</a></li><li><a href="#6">Compatibility, version info, and licence</a></li><li><a href="#7">Performance</a></li><li><a href="#8">Test suite</a></li></ul></div><h2 id="1">Description</h2><p>
+This was implemented using the <a
+href="https://www.ecma-international.org/wp-content/uploads/ECMA-404_2nd_edition_december_2017.pdf">
+ECMA JSON syntax standard</a>.
+<br>The failing and passing cases were validated using the test cases from a JSON test suite on
+<a href="http://github.com/nst/JSONTestSuite">GitHub</a>, containing over 300 cases of possibly
+ambiguous syntax. Because the standard is not explicit for every situation, there are also test
+cases left to the interpreter.
+<br>
+<br>Implementation details for compatibility with the <code>jsondecode</code> Matlab function:
+<ul><li>If possible an array of arrays is treated as a row-major matrix.
+       <ul><li>all data types should match</li>
+           <li>all elements must be vectors of the same size</li></ul></li>
+    <li>The null literal is an empty <code>double</code>, unless it is an element of an array, in
+       which case it is parsed as a <code>NaN</code>.</li>
+    <li>The name of an object is converted to a valid field name with a function similar to
+       <code>genvarname</code> or <code>matlab.lang.makeValidName</code>. This means characters
+       after some whitespace characters are converted to uppercase, all whitespace is removed,
+       invalid characters are replaced by an underscore, and an x is used as a prefix if the
+       resulting name is empty or starts with a number or underscore. In case of duplicate object
+       names, an underscore and a counter is added. A <code>char(0)</code> will cause the name to
+       be cropped.</li>
+    <li>An empty array (<code>'[]'</code>) is encoded as an empty <code>double</code>
+       (<code>val=[]</code>).</li>
+    <li>An empty array array of arrays (<code>'[[]]'</code>) is encoded as an empty
+       <code>cell</code> (<code>val={[]}</code>).</li>
+</ul>
+</p><h2 id="2">Syntax</h2><pre class="language-matlab">object=JSON(str)
+object=JSON(___,options)
+object=JSON(___,Name,Value)
+[object,ME]=JSON(___)
+</pre><h2 id="3">Output arguments</h2><p>
+<table border=1>
+<tr><td>
+object
+</td><td>
+This contains the parsed object. This should closely match the output of the Matlab builtin
+<code>jsondecode</code> (see description).
+</td></tr>
+<tr><td>
+ME
+</td><td>
+Errors during parsing will be caught. If a second output argument is specified, the error will
+not be rethrown, but the corresponding <code>MException</code> object is returned instead.
+</td></tr>
+</table>
+</p><h2 id="4">Input arguments</h2><p>
+<table border=1>
+<tr><td>
+str
+</td><td>
+The JSON string to be parsed. This should be a <code>char</code> vector or a
+<code>string</code>/<code>cellstr</code>.
+</td></tr>
+<tr><td>
+Name,Value
+</td><td>
+The settings below can be entered with a Name,Value syntax.
+</td></tr>
+<tr><td>
+options
+</td><td>
+Instead of the Name,Value, parameters can also be entered in a struct. Missing fields will be set
+to the default values.
+</td></tr>
+</table>
+</p><h2 id="5">Name,Value pairs</h2><p>
+<table border=1>
+<tr><td>
+EnforceValidNumber
+</td><td>
+With this boolean you can turn off the check if a number conforms to the JSON specifications.
+This will cause <code>str2double<code> to determine the validity. No error will be thrown in case
+of <code>NaN</code> output.
+<br><code>default=true;</code>
+</td></tr>
+<tr><td>
+ThrowErrorForInvalid
+</td><td>
+If this is <code>false</code>, no error will be throw if parsing fails. Instead, an empty array
+is returned.
+<br><code>default=nargout<2;</code>
+</td></tr>
+<tr><td>
+MaxRecursionDepth
+</td><td>
+This function is a recursive function. Under some rare conditions, Matlab/Octave might crash when
+the maximum recursion depth is reached, instead of throwing an error. This parameter allows you
+to stay on the safe side.
+<br>The value can be set to <code>inf</code> to effectively remove the limit and only rely on the
+builtin safeguards.
+<br><code>default=101-numel(dbstack);</code>
+</td></tr>
+</table>
+</p><h2 id="6">Compatibility, version info, and licence</h2><p>
+Compatibility considerations:
+<ul>
+   <li>The recursion depth is limited to 100. This will affect all combinations of nesting of
+      arrays and objects. Without this, the recursion limit may be reached, causing Matlab/Octave
+      to crash. Matlab/Octave should prevent this on their own, but this is in place in case that
+      protection fails. The value can be set to <code>inf</code> to effectively remove the limit
+      and only rely on the builtin safeguards.</li>
+</ul>
+</p><p>
+<table>
+<tr>
+<td> Test suite result </td>
+<td style="border:2px solid black;"> Windows XP/7/10 </td>
+<td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
+<td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2021a </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it>Pass</it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2020b </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2020a </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2018a </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it>Pass</it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2017b </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2017a </td>
+<td> <it>W7 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2016a </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2015a </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it>Pass</it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2013b </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2012b </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2011a </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it>Pass</it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2010b </td>
+<td> <it></it> </td>
+<td> <it>Pass</it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2010a </td>
+<td> <it>W7 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2007b </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab 7.1 (R14SP3) </td>
+<td> <it>XP : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab 6.5 (R13) </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Octave 6.2.0 </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Octave 5.2.0 </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it>Pass</it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Octave 4.4.1 </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it>Pass</it> </td>
+</tr>
+</table>
+</p><pre>Version: 1.0.0
+Date:    2021-07-09
+Author:  H.J. Wisselink
+Licence: CC by-nc-sa 4.0 ( https://creativecommons.org/licenses/by-nc-sa/4.0 )
+Email = 'h_j_wisselink*alumnus_utwente_nl';
+Real_email = regexprep(Email,{'*','_'},{'@','.'})</pre><h2 id="7">Performance</h2><p>
+The benchmarking function used to generate the results below can be found
+<a href=https://web.archive.org/web/20210709184320/https://cdn-127.anonfiles.com/p4Q4yb5eu9/3017663d-1625856795/aaa___JSON___performance_test.m>here</a>.
+<br>The test results shown in the tables below are normalized to the results of the newest
+Matlab release on Windows, since the performace is strongly dependent on the specific
+computer running the test. To allow absolute comparisons as well the results in that cell
+are shown in seconds.
+<br>
+<br>Note that every result apart from those under Windows 10 was obtained in a VM, so the
+performance is likely an underestimation of the true performance.
+<br>
+<br>Test 1: This test parses the citm_catalog.json file. The original file can be found on <a href="https://github.com/RichardHightower/json-parsers-benchmark/blob/master/data/citm_catalog.json">GitHub</a>.<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is 14&thinsp;183&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
+<br>Test 2: Run the tests from the JSON Test Suite on <a href="http://github.com/nst/JSONTestSuite">GitHub</a>. Note that the two largest tests are excluded. These tests have been pre-parsed to a struct array and converted to JSON so it could be easily included in this m-file.<br>The test comprises 317 cases. There are 95 cases that should pass, 188 cases that should fail, and 34 cases that are left to the interpreter (as there is no consensus on whether they are valid JSON or not).<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is -46&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
+<br>
+<table>
+<tr>
+<td> Test suite result </td>
+<td style="border:2px solid black;"> Windows XP/7/10 </td>
+<td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
+<td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2021a </td>
+<td> (W10) <br> 6.984&nbsp;s <br> 0.305&nbsp;s </td>
+<td>  <br> 95&nbsp;% <br> 83&nbsp;% </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2020b </td>
+<td> (W10) <br> 101&nbsp;% <br> 98&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2020a </td>
+<td> (W10) <br> 113&nbsp;% <br> 101&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2018a </td>
+<td> (W10) <br> 136&nbsp;% <br> 95&nbsp;% </td>
+<td>  <br> 121&nbsp;% <br> 77&nbsp;% </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2017b </td>
+<td> (W10) <br> 144&nbsp;% <br> 96&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2017a </td>
+<td> (W7) <br> 129&nbsp;% <br> 87&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2016a </td>
+<td> (W10) <br> 144&nbsp;% <br> 103&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2015a </td>
+<td> (W10) <br> 172&nbsp;% <br> 147&nbsp;% </td>
+<td>  <br> 179&nbsp;% <br> 130&nbsp;% </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2013b </td>
+<td> (W10) <br> 167&nbsp;% <br> 139&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2012b </td>
+<td> (W10) <br> 223&nbsp;% <br> 142&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2011a </td>
+<td> (W10) <br> 168&nbsp;% <br> 128&nbsp;% </td>
+<td>  <br> 175&nbsp;% <br> 109&nbsp;% </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2010b </td>
+<td>  </td>
+<td>  <br> 168&nbsp;% <br> 102&nbsp;% </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2010a </td>
+<td> (W7) <br> 190&nbsp;% <br> 112&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab R2007b </td>
+<td> (W10) <br> 155&nbsp;% <br> 92&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab 7.1 (R14SP3) </td>
+<td> (XP) <br> 127&nbsp;% <br> 72&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Matlab 6.5 (R13) </td>
+<td> (W10) <br> 195&nbsp;% <br> 3&thinsp;136&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Octave 6.2.0 </td>
+<td> (W10) <br> 489&nbsp;% <br> 565&nbsp;% </td>
+<td>  </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Octave 5.2.0 </td>
+<td> (W10) <br> 268&nbsp;% <br> 399&nbsp;% </td>
+<td>  <br> 197&nbsp;% <br> 292&nbsp;% </td>
+<td>  </td>
+</tr>
+<tr>
+<td style="border:2px solid black;vertical-align:middle"> Octave 4.4.1 </td>
+<td> (W10) <br> 255&nbsp;% <br> 410&nbsp;% </td>
+<td>  </td>
+<td>  <br> 425&nbsp;% <br> 621&nbsp;% </td>
+</tr>
+</table>
+</p><h2 id="8">Test suite</h2><p>This tester is included so you can test if your own modifications would introduce any bugs. These tests form the basis for the compatibility table above.</p><p>Note that some of the functions in this tester might be different from the functions included in the actual function. Usually this is done to allow triggering of certain errors.</p><p>Even without comments or blank lines and compressing the functions down as much as possible, the tester function is too large for this page. The full tester function (including all comments) can be found <a href="https://web.archive.org/web/20210709184519/https://cdn-106.anonfiles.com/x7R2ye52u6/e7b999c9-1625856889/aaa___JSON___test.m">here</a>.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% JSON
+%
+% <html><tt style="font-size:0%">Formatted documentation for the JSON function.</tt>
+% <div style="margin-top:-5em;color:grey">This interprets char array as JSON and returns an object the same size and shape as the builtin.
+% </div>
+% </html>
+
+%% Description
+% <html>
+% This was implemented using the <a
+% href="https://www.ecma-international.org/wp-content/uploads/ECMA-404_2nd_edition_december_2017.pdf">
+% ECMA JSON syntax standard</a>.
+% <br>The failing and passing cases were validated using the test cases from a JSON test suite on
+% <a href="http://github.com/nst/JSONTestSuite">GitHub</a>, containing over 300 cases of possibly
+% ambiguous syntax. Because the standard is not explicit for every situation, there are also test
+% cases left to the interpreter.
+% <br>
+% <br>Implementation details for compatibility with the <code>jsondecode</code> Matlab function:
+% <ul><li>If possible an array of arrays is treated as a row-major matrix.
+%        <ul><li>all data types should match</li>
+%            <li>all elements must be vectors of the same size</li></ul></li>
+%     <li>The null literal is an empty <code>double</code>, unless it is an element of an array, in
+%        which case it is parsed as a <code>NaN</code>.</li>
+%     <li>The name of an object is converted to a valid field name with a function similar to
+%        <code>genvarname</code> or <code>matlab.lang.makeValidName</code>. This means characters
+%        after some whitespace characters are converted to uppercase, all whitespace is removed,
+%        invalid characters are replaced by an underscore, and an x is used as a prefix if the
+%        resulting name is empty or starts with a number or underscore. In case of duplicate object
+%        names, an underscore and a counter is added. A <code>char(0)</code> will cause the name to
+%        be cropped.</li>
+%     <li>An empty array (<code>'[]'</code>) is encoded as an empty <code>double</code>
+%        (<code>val=[]</code>).</li>
+%     <li>An empty array array of arrays (<code>'[[]]'</code>) is encoded as an empty
+%        <code>cell</code> (<code>val={[]}</code>).</li>
+% </ul>
+% </html>
+
+%% Syntax
+%
+%   object=JSON(str)
+%   object=JSON(___,options)
+%   object=JSON(___,Name,Value)
+%   [object,ME]=JSON(___)
+
+%% Output arguments
+%
+% <html>
+% <table border=1>
+% <tr><td>
+% object
+% </td><td>
+% This contains the parsed object. This should closely match the output of the Matlab builtin
+% <code>jsondecode</code> (see description).
+% </td></tr>
+% <tr><td>
+% ME
+% </td><td>
+% Errors during parsing will be caught. If a second output argument is specified, the error will
+% not be rethrown, but the corresponding <code>MException</code> object is returned instead.
+% </td></tr>
+% </table>
+% </html>
+
+%% Input arguments
+%
+% <html>
+% <table border=1>
+% <tr><td>
+% str
+% </td><td>
+% The JSON string to be parsed. This should be a <code>char</code> vector or a
+% <code>string</code>/<code>cellstr</code>.
+% </td></tr>
+% <tr><td>
+% Name,Value
+% </td><td>
+% The settings below can be entered with a Name,Value syntax.
+% </td></tr>
+% <tr><td>
+% options
+% </td><td>
+% Instead of the Name,Value, parameters can also be entered in a struct. Missing fields will be set
+% to the default values.
+% </td></tr>
+% </table>
+% </html>
+
+%% Name,Value pairs
+%
+% <html>
+% <table border=1>
+% <tr><td>
+% EnforceValidNumber
+% </td><td>
+% With this boolean you can turn off the check if a number conforms to the JSON specifications.
+% This will cause <code>str2double<code> to determine the validity. No error will be thrown in case
+% of <code>NaN</code> output.
+% <br><code>default=true;</code>
+% </td></tr>
+% <tr><td>
+% ThrowErrorForInvalid
+% </td><td>
+% If this is <code>false</code>, no error will be throw if parsing fails. Instead, an empty array
+% is returned.
+% <br><code>default=nargout<2;</code>
+% </td></tr>
+% <tr><td>
+% MaxRecursionDepth
+% </td><td>
+% This function is a recursive function. Under some rare conditions, Matlab/Octave might crash when
+% the maximum recursion depth is reached, instead of throwing an error. This parameter allows you
+% to stay on the safe side.
+% <br>The value can be set to <code>inf</code> to effectively remove the limit and only rely on the
+% builtin safeguards.
+% <br><code>default=101-numel(dbstack);</code>
+% </td></tr>
+% </table>
+% </html>
+
+%% Compatibility, version info, and licence
+% <html>
+% Compatibility considerations:
+% <ul>
+%    <li>The recursion depth is limited to 100. This will affect all combinations of nesting of
+%       arrays and objects. Without this, the recursion limit may be reached, causing Matlab/Octave
+%       to crash. Matlab/Octave should prevent this on their own, but this is in place in case that
+%       protection fails. The value can be set to <code>inf</code> to effectively remove the limit
+%       and only rely on the builtin safeguards.</li>
+% </ul>
+% </html>
+% 
+% <html>
+% <table>
+% <tr>
+% <td> Test suite result </td>
+% <td style="border:2px solid black;"> Windows XP/7/10 </td>
+% <td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
+% <td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2021a </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it>Pass</it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2020b </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2020a </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2018a </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it>Pass</it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2017b </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2017a </td>
+% <td> <it>W7 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2016a </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2015a </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it>Pass</it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2013b </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2012b </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2011a </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it>Pass</it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2010b </td>
+% <td> <it></it> </td>
+% <td> <it>Pass</it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2010a </td>
+% <td> <it>W7 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2007b </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab 7.1 (R14SP3) </td>
+% <td> <it>XP : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab 6.5 (R13) </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Octave 6.2.0 </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Octave 5.2.0 </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it>Pass</it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Octave 4.4.1 </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it>Pass</it> </td>
+% </tr>
+% </table>
+% </html>
+%
+%  Version: 1.0.0
+%  Date:    2021-07-09
+%  Author:  H.J. Wisselink
+%  Licence: CC by-nc-sa 4.0 ( https://creativecommons.org/licenses/by-nc-sa/4.0 )
+%  Email = 'h_j_wisselink*alumnus_utwente_nl';
+%  Real_email = regexprep(Email,{'*','_'},{'@','.'})
+
+%% Performance
+% <html>
+% The benchmarking function used to generate the results below can be found
+% <a href=https://web.archive.org/web/20210709184320/https://cdn-127.anonfiles.com/p4Q4yb5eu9/3017663d-1625856795/aaa___JSON___performance_test.m>here</a>.
+% <br>The test results shown in the tables below are normalized to the results of the newest
+% Matlab release on Windows, since the performace is strongly dependent on the specific
+% computer running the test. To allow absolute comparisons as well the results in that cell
+% are shown in seconds.
+% <br>
+% <br>Note that every result apart from those under Windows 10 was obtained in a VM, so the
+% performance is likely an underestimation of the true performance.
+% <br>
+% <br>Test 1: This test parses the citm_catalog.json file. The original file can be found on <a href="https://github.com/RichardHightower/json-parsers-benchmark/blob/master/data/citm_catalog.json">GitHub</a>.<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is 14&thinsp;183&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
+% <br>Test 2: Run the tests from the JSON Test Suite on <a href="http://github.com/nst/JSONTestSuite">GitHub</a>. Note that the two largest tests are excluded. These tests have been pre-parsed to a struct array and converted to JSON so it could be easily included in this m-file.<br>The test comprises 317 cases. There are 95 cases that should pass, 188 cases that should fail, and 34 cases that are left to the interpreter (as there is no consensus on whether they are valid JSON or not).<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is -46&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
+% <br>
+% <table>
+% <tr>
+% <td> Test suite result </td>
+% <td style="border:2px solid black;"> Windows XP/7/10 </td>
+% <td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
+% <td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2021a </td>
+% <td> (W10) <br> 6.984&nbsp;s <br> 0.305&nbsp;s </td>
+% <td>  <br> 95&nbsp;% <br> 83&nbsp;% </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2020b </td>
+% <td> (W10) <br> 101&nbsp;% <br> 98&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2020a </td>
+% <td> (W10) <br> 113&nbsp;% <br> 101&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2018a </td>
+% <td> (W10) <br> 136&nbsp;% <br> 95&nbsp;% </td>
+% <td>  <br> 121&nbsp;% <br> 77&nbsp;% </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2017b </td>
+% <td> (W10) <br> 144&nbsp;% <br> 96&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2017a </td>
+% <td> (W7) <br> 129&nbsp;% <br> 87&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2016a </td>
+% <td> (W10) <br> 144&nbsp;% <br> 103&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2015a </td>
+% <td> (W10) <br> 172&nbsp;% <br> 147&nbsp;% </td>
+% <td>  <br> 179&nbsp;% <br> 130&nbsp;% </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2013b </td>
+% <td> (W10) <br> 167&nbsp;% <br> 139&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2012b </td>
+% <td> (W10) <br> 223&nbsp;% <br> 142&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2011a </td>
+% <td> (W10) <br> 168&nbsp;% <br> 128&nbsp;% </td>
+% <td>  <br> 175&nbsp;% <br> 109&nbsp;% </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2010b </td>
+% <td>  </td>
+% <td>  <br> 168&nbsp;% <br> 102&nbsp;% </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2010a </td>
+% <td> (W7) <br> 190&nbsp;% <br> 112&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab R2007b </td>
+% <td> (W10) <br> 155&nbsp;% <br> 92&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab 7.1 (R14SP3) </td>
+% <td> (XP) <br> 127&nbsp;% <br> 72&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Matlab 6.5 (R13) </td>
+% <td> (W10) <br> 195&nbsp;% <br> 3&thinsp;136&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Octave 6.2.0 </td>
+% <td> (W10) <br> 489&nbsp;% <br> 565&nbsp;% </td>
+% <td>  </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Octave 5.2.0 </td>
+% <td> (W10) <br> 268&nbsp;% <br> 399&nbsp;% </td>
+% <td>  <br> 197&nbsp;% <br> 292&nbsp;% </td>
+% <td>  </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;vertical-align:middle"> Octave 4.4.1 </td>
+% <td> (W10) <br> 255&nbsp;% <br> 410&nbsp;% </td>
+% <td>  </td>
+% <td>  <br> 425&nbsp;% <br> 621&nbsp;% </td>
+% </tr>
+% </table>
+% </html>
+
+%% Test suite
+%
+% This tester is included so you can test if your own modifications would introduce any bugs. These
+% tests form the basis for the compatibility table above.
+% 
+% Note that some of the functions in this tester might be different from the functions included in
+% the actual function. Usually this is done to allow triggering of certain errors.
+% 
+% Even without comments or blank lines and compressing the functions down as much as possible, the tester function is too large for this page. The full tester function (including all comments) can be found <https://web.archive.org/web/20210709184519/https://cdn-106.anonfiles.com/x7R2ye52u6/e7b999c9-1625856889/aaa___JSON___test.m here>.
+
+##### SOURCE END #####
+--></body></html>
