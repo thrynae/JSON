@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>JSON</title><meta name="generator" content="MATLAB 9.10"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2021-07-09"><meta name="DC.source" content="JSON.m"><style type="text/css">
+      --><title>JSON</title><meta name="generator" content="MATLAB 9.11"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-01-22"><meta name="DC.source" content="JSON.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -68,7 +68,11 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
   </style></head><body><div class="content"><h1>JSON</h1><!--introduction--><p><tt style="font-size:0%">Formatted documentation for the JSON function.</tt>
-<div style="margin-top:-5em;color:grey">This interprets char array as JSON and returns an object the same size and shape as the builtin.
+<div style="margin-top:-5em;color:grey">This interprets char array as JSON and returns an object
+the same size and shape as the builtin.
+<br>
+<br> NB: For very small files this function may be faster than the builtin, but for large files
+this function may be much slower. See the performance section for detailed timing information.
 </div>
 </p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Description</a></li><li><a href="#2">Syntax</a></li><li><a href="#3">Output arguments</a></li><li><a href="#4">Input arguments</a></li><li><a href="#5">Name,Value pairs</a></li><li><a href="#6">Compatibility, version info, and licence</a></li><li><a href="#7">Performance</a></li><li><a href="#8">Test suite</a></li></ul></div><h2 id="1">Description</h2><p>
 This was implemented using the <a
@@ -177,21 +181,27 @@ Compatibility considerations:
 <table>
 <tr>
 <td> Test suite result </td>
-<td style="border:2px solid black;"> Windows XP/7/10 </td>
-<td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
-<td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+<td style="border:2px solid black;"> Windows </td>
+<td style="border:2px solid black;"> Linux </td>
+<td style="border:2px solid black;"> MacOS </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2021b </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
+<td> <it>Monterey : Pass</it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Matlab R2021a </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it>Pass</it> </td>
+<td> <it></it> </td>
 <td> <it></it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Matlab R2020b </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it></it> </td>
-<td> <it></it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
+<td> <it>Monterey : Pass</it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Matlab R2020a </td>
@@ -200,33 +210,39 @@ Compatibility considerations:
 <td> <it></it> </td>
 </tr>
 <tr>
+<td style="border:2px solid black;"> Matlab R2019b </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
+<td> <it>Monterey : Pass</it> </td>
+</tr>
+<tr>
+<td style="border:2px solid black;"> Matlab R2019a </td>
+<td> <it>W10 : Pass</it> </td>
+<td> <it></it> </td>
+<td> <it></it> </td>
+</tr>
+<tr>
 <td style="border:2px solid black;"> Matlab R2018a </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it>Pass</it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
 <td> <it></it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Matlab R2017b </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it></it> </td>
-<td> <it></it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
+<td> <it>Monterey : Pass</it> </td>
 </tr>
 <tr>
-<td style="border:2px solid black;"> Matlab R2017a </td>
-<td> <it>W7 : Pass</it> </td>
-<td> <it></it> </td>
-<td> <it></it> </td>
-</tr>
-<tr>
-<td style="border:2px solid black;"> Matlab R2016a </td>
+<td style="border:2px solid black;"> Matlab R2016b </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it></it> </td>
-<td> <it></it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
+<td> <it>Monterey : Pass</it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Matlab R2015a </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it>Pass</it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
 <td> <it></it> </td>
 </tr>
 <tr>
@@ -236,21 +252,21 @@ Compatibility considerations:
 <td> <it></it> </td>
 </tr>
 <tr>
-<td style="border:2px solid black;"> Matlab R2012b </td>
-<td> <it>W10 : Pass</it> </td>
+<td style="border:2px solid black;"> Matlab R2012a </td>
 <td> <it></it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
 <td> <it></it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Matlab R2011a </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it>Pass</it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
 <td> <it></it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Matlab R2010b </td>
 <td> <it></it> </td>
-<td> <it>Pass</it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
 <td> <it></it> </td>
 </tr>
 <tr>
@@ -281,168 +297,71 @@ Compatibility considerations:
 <td style="border:2px solid black;"> Octave 6.2.0 </td>
 <td> <it>W10 : Pass</it> </td>
 <td> <it></it> </td>
-<td> <it></it> </td>
+<td> <it>Catalina : Partial: avoid regexp bug for deep nesting</it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Octave 5.2.0 </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it>Pass</it> </td>
+<td> <it>ubuntu_20.04 : Pass</it> </td>
 <td> <it></it> </td>
 </tr>
 <tr>
 <td style="border:2px solid black;"> Octave 4.4.1 </td>
 <td> <it>W10 : Pass</it> </td>
-<td> <it></it> </td>
-<td> <it>Pass</it> </td>
+<td> <it>raspbian_10 : Pass</it> </td>
+<td> <it>Catalina : Pass</it> </td>
 </tr>
 </table>
-</p><pre>Version: 1.0.0
-Date:    2021-07-09
+</p><pre>Version: 1.0.1
+Date:    2022-01-22
 Author:  H.J. Wisselink
 Licence: CC by-nc-sa 4.0 ( https://creativecommons.org/licenses/by-nc-sa/4.0 )
 Email = 'h_j_wisselink*alumnus_utwente_nl';
 Real_email = regexprep(Email,{'*','_'},{'@','.'})</pre><h2 id="7">Performance</h2><p>
 The benchmarking function used to generate the results below can be found
-<a href=https://web.archive.org/web/20210709184320/https://cdn-127.anonfiles.com/p4Q4yb5eu9/3017663d-1625856795/aaa___JSON___performance_test.m>here</a>.
+<a href=https://web.archive.org/web/20220122100136/https://cdn-131.anonfiles.com/fakeNdC7xc/8556cc6a-1642846267/aaa___JSON___performance_test.m>here</a>.
 <br>The test results shown in the tables below are normalized to the results of the newest
-Matlab release on Windows, since the performace is strongly dependent on the specific
+Matlab release, since the performace is strongly dependent on the specific
 computer running the test. To allow absolute comparisons as well the results in that cell
 are shown in seconds.
 <br>
-<br>Note that every result apart from those under Windows 10 was obtained in a VM, so the
-performance is likely an underestimation of the true performance.
+<br>The results for Ubuntu and the results for Octave on MacOS were obtained in a VM, so
+the performance is likely an underestimation of the true performance. The normalization
+should compensate for most of this effect.
 <br>
-<br>Test 1: This test parses the citm_catalog.json file. The original file can be found on <a href="https://github.com/RichardHightower/json-parsers-benchmark/blob/master/data/citm_catalog.json">GitHub</a>.<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is 14&thinsp;183&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
-<br>Test 2: Run the tests from the JSON Test Suite on <a href="http://github.com/nst/JSONTestSuite">GitHub</a>. Note that the two largest tests are excluded. These tests have been pre-parsed to a struct array and converted to JSON so it could be easily included in this m-file.<br>The test comprises 317 cases. There are 95 cases that should pass, 188 cases that should fail, and 34 cases that are left to the interpreter (as there is no consensus on whether they are valid JSON or not).<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is -46&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
+<br>Test 1: test 1
+<br>Test 2: test 2
 <br>
 <table>
 <tr>
 <td> Test suite result </td>
-<td style="border:2px solid black;"> Windows XP/7/10 </td>
+<td style="border:2px solid black;"> Windows </td>
 <td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
-<td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+<td style="border:2px solid black;"> MacOS </td>
 </tr>
 <tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2021a </td>
-<td> (W10) <br> 6.984&nbsp;s <br> 0.305&nbsp;s </td>
-<td>  <br> 95&nbsp;% <br> 83&nbsp;% </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2020b </td>
-<td> (W10) <br> 101&nbsp;% <br> 98&nbsp;% </td>
+<td style="border:2px solid black;vertical-align:middle"> placeholder release name 1 </td>
+<td>  <br> 1.000&nbsp;s <br> NaN&nbsp;s </td>
 <td>  </td>
 <td>  </td>
 </tr>
 <tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2020a </td>
-<td> (W10) <br> 113&nbsp;% <br> 101&nbsp;% </td>
+<td style="border:2px solid black;vertical-align:middle"> placeholder release name 2 </td>
 <td>  </td>
 <td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2018a </td>
-<td> (W10) <br> 136&nbsp;% <br> 95&nbsp;% </td>
-<td>  <br> 121&nbsp;% <br> 77&nbsp;% </td>
 <td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2017b </td>
-<td> (W10) <br> 144&nbsp;% <br> 96&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2017a </td>
-<td> (W7) <br> 129&nbsp;% <br> 87&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2016a </td>
-<td> (W10) <br> 144&nbsp;% <br> 103&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2015a </td>
-<td> (W10) <br> 172&nbsp;% <br> 147&nbsp;% </td>
-<td>  <br> 179&nbsp;% <br> 130&nbsp;% </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2013b </td>
-<td> (W10) <br> 167&nbsp;% <br> 139&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2012b </td>
-<td> (W10) <br> 223&nbsp;% <br> 142&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2011a </td>
-<td> (W10) <br> 168&nbsp;% <br> 128&nbsp;% </td>
-<td>  <br> 175&nbsp;% <br> 109&nbsp;% </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2010b </td>
-<td>  </td>
-<td>  <br> 168&nbsp;% <br> 102&nbsp;% </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2010a </td>
-<td> (W7) <br> 190&nbsp;% <br> 112&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab R2007b </td>
-<td> (W10) <br> 155&nbsp;% <br> 92&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab 7.1 (R14SP3) </td>
-<td> (XP) <br> 127&nbsp;% <br> 72&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Matlab 6.5 (R13) </td>
-<td> (W10) <br> 195&nbsp;% <br> 3&thinsp;136&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Octave 6.2.0 </td>
-<td> (W10) <br> 489&nbsp;% <br> 565&nbsp;% </td>
-<td>  </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Octave 5.2.0 </td>
-<td> (W10) <br> 268&nbsp;% <br> 399&nbsp;% </td>
-<td>  <br> 197&nbsp;% <br> 292&nbsp;% </td>
-<td>  </td>
-</tr>
-<tr>
-<td style="border:2px solid black;vertical-align:middle"> Octave 4.4.1 </td>
-<td> (W10) <br> 255&nbsp;% <br> 410&nbsp;% </td>
-<td>  </td>
-<td>  <br> 425&nbsp;% <br> 621&nbsp;% </td>
 </tr>
 </table>
-</p><h2 id="8">Test suite</h2><p>This tester is included so you can test if your own modifications would introduce any bugs. These tests form the basis for the compatibility table above.</p><p>Note that some of the functions in this tester might be different from the functions included in the actual function. Usually this is done to allow triggering of certain errors.</p><p>Even without comments or blank lines and compressing the functions down as much as possible, the tester function is too large for this page. The full tester function (including all comments) can be found <a href="https://web.archive.org/web/20210709184519/https://cdn-106.anonfiles.com/x7R2ye52u6/e7b999c9-1625856889/aaa___JSON___test.m">here</a>.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021a</a><br></p></div><!--
+</p><h2 id="8">Test suite</h2><p>This tester is included so you can test if your own modifications would introduce any bugs. These tests form the basis for the compatibility table above.</p><p>Note that some of the functions in this tester might be different from the functions included in the actual function. Usually this is done to allow triggering of certain errors.</p><p>Even without comments or blank lines and compressing the functions down as much as possible, the tester function is too large for this page. The full tester function (including all comments) can be found <a href="https://web.archive.org/web/20220122102738/https://cdn-101.anonfiles.com/T3k9N2C8xb/06d3a2f8-1642847852/aaa___JSON___test.m">here</a>.</p><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2021b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% JSON
 %
 % <html><tt style="font-size:0%">Formatted documentation for the JSON function.</tt>
-% <div style="margin-top:-5em;color:grey">This interprets char array as JSON and returns an object the same size and shape as the builtin.
+% <div style="margin-top:-5em;color:grey">This interprets char array as JSON and returns an object
+% the same size and shape as the builtin.
+% <br>
+% <br> NB: For very small files this function may be faster than the builtin, but for large files
+% this function may be much slower. See the performance section for detailed timing information.
 % </div>
 % </html>
 
@@ -574,21 +493,27 @@ performance is likely an underestimation of the true performance.
 % <table>
 % <tr>
 % <td> Test suite result </td>
-% <td style="border:2px solid black;"> Windows XP/7/10 </td>
-% <td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
-% <td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+% <td style="border:2px solid black;"> Windows </td>
+% <td style="border:2px solid black;"> Linux </td>
+% <td style="border:2px solid black;"> MacOS </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2021b </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
+% <td> <it>Monterey : Pass</it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Matlab R2021a </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it>Pass</it> </td>
+% <td> <it></it> </td>
 % <td> <it></it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Matlab R2020b </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it></it> </td>
-% <td> <it></it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
+% <td> <it>Monterey : Pass</it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Matlab R2020a </td>
@@ -597,33 +522,39 @@ performance is likely an underestimation of the true performance.
 % <td> <it></it> </td>
 % </tr>
 % <tr>
+% <td style="border:2px solid black;"> Matlab R2019b </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
+% <td> <it>Monterey : Pass</it> </td>
+% </tr>
+% <tr>
+% <td style="border:2px solid black;"> Matlab R2019a </td>
+% <td> <it>W10 : Pass</it> </td>
+% <td> <it></it> </td>
+% <td> <it></it> </td>
+% </tr>
+% <tr>
 % <td style="border:2px solid black;"> Matlab R2018a </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it>Pass</it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
 % <td> <it></it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Matlab R2017b </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it></it> </td>
-% <td> <it></it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
+% <td> <it>Monterey : Pass</it> </td>
 % </tr>
 % <tr>
-% <td style="border:2px solid black;"> Matlab R2017a </td>
-% <td> <it>W7 : Pass</it> </td>
-% <td> <it></it> </td>
-% <td> <it></it> </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;"> Matlab R2016a </td>
+% <td style="border:2px solid black;"> Matlab R2016b </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it></it> </td>
-% <td> <it></it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
+% <td> <it>Monterey : Pass</it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Matlab R2015a </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it>Pass</it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
 % <td> <it></it> </td>
 % </tr>
 % <tr>
@@ -633,21 +564,21 @@ performance is likely an underestimation of the true performance.
 % <td> <it></it> </td>
 % </tr>
 % <tr>
-% <td style="border:2px solid black;"> Matlab R2012b </td>
-% <td> <it>W10 : Pass</it> </td>
+% <td style="border:2px solid black;"> Matlab R2012a </td>
 % <td> <it></it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
 % <td> <it></it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Matlab R2011a </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it>Pass</it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
 % <td> <it></it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Matlab R2010b </td>
 % <td> <it></it> </td>
-% <td> <it>Pass</it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
 % <td> <it></it> </td>
 % </tr>
 % <tr>
@@ -678,25 +609,25 @@ performance is likely an underestimation of the true performance.
 % <td style="border:2px solid black;"> Octave 6.2.0 </td>
 % <td> <it>W10 : Pass</it> </td>
 % <td> <it></it> </td>
-% <td> <it></it> </td>
+% <td> <it>Catalina : Partial: avoid regexp bug for deep nesting</it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Octave 5.2.0 </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it>Pass</it> </td>
+% <td> <it>ubuntu_20.04 : Pass</it> </td>
 % <td> <it></it> </td>
 % </tr>
 % <tr>
 % <td style="border:2px solid black;"> Octave 4.4.1 </td>
 % <td> <it>W10 : Pass</it> </td>
-% <td> <it></it> </td>
-% <td> <it>Pass</it> </td>
+% <td> <it>raspbian_10 : Pass</it> </td>
+% <td> <it>Catalina : Pass</it> </td>
 % </tr>
 % </table>
 % </html>
 %
-%  Version: 1.0.0
-%  Date:    2021-07-09
+%  Version: 1.0.1
+%  Date:    2022-01-22
 %  Author:  H.J. Wisselink
 %  Licence: CC by-nc-sa 4.0 ( https://creativecommons.org/licenses/by-nc-sa/4.0 )
 %  Email = 'h_j_wisselink*alumnus_utwente_nl';
@@ -705,138 +636,37 @@ performance is likely an underestimation of the true performance.
 %% Performance
 % <html>
 % The benchmarking function used to generate the results below can be found
-% <a href=https://web.archive.org/web/20210709184320/https://cdn-127.anonfiles.com/p4Q4yb5eu9/3017663d-1625856795/aaa___JSON___performance_test.m>here</a>.
+% <a href=https://web.archive.org/web/20220122100136/https://cdn-131.anonfiles.com/fakeNdC7xc/8556cc6a-1642846267/aaa___JSON___performance_test.m>here</a>.
 % <br>The test results shown in the tables below are normalized to the results of the newest
-% Matlab release on Windows, since the performace is strongly dependent on the specific
+% Matlab release, since the performace is strongly dependent on the specific
 % computer running the test. To allow absolute comparisons as well the results in that cell
 % are shown in seconds.
 % <br>
-% <br>Note that every result apart from those under Windows 10 was obtained in a VM, so the
-% performance is likely an underestimation of the true performance.
+% <br>The results for Ubuntu and the results for Octave on MacOS were obtained in a VM, so
+% the performance is likely an underestimation of the true performance. The normalization 
+% should compensate for most of this effect.
 % <br>
-% <br>Test 1: This test parses the citm_catalog.json file. The original file can be found on <a href="https://github.com/RichardHightower/json-parsers-benchmark/blob/master/data/citm_catalog.json">GitHub</a>.<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is 14&thinsp;183&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
-% <br>Test 2: Run the tests from the JSON Test Suite on <a href="http://github.com/nst/JSONTestSuite">GitHub</a>. Note that the two largest tests are excluded. These tests have been pre-parsed to a struct array and converted to JSON so it could be easily included in this m-file.<br>The test comprises 317 cases. There are 95 cases that should pass, 188 cases that should fail, and 34 cases that are left to the interpreter (as there is no consensus on whether they are valid JSON or not).<br>For this test the Matlab builtin (i.e. the <code>jsondecode</code> function) is -46&nbsp;% slower. Note that the exact percentage depends on the exact system, Matlab version, and JSON file.
+% <br>Test 1: test 1
+% <br>Test 2: test 2
 % <br>
 % <table>
 % <tr>
 % <td> Test suite result </td>
-% <td style="border:2px solid black;"> Windows XP/7/10 </td>
+% <td style="border:2px solid black;"> Windows </td>
 % <td style="border:2px solid black;"> Ubuntu 20.04 LTS </td>
-% <td style="border:2px solid black;"> MacOS 10.15 Catalina </td>
+% <td style="border:2px solid black;"> MacOS </td>
 % </tr>
 % <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2021a </td>
-% <td> (W10) <br> 6.984&nbsp;s <br> 0.305&nbsp;s </td>
-% <td>  <br> 95&nbsp;% <br> 83&nbsp;% </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2020b </td>
-% <td> (W10) <br> 101&nbsp;% <br> 98&nbsp;% </td>
+% <td style="border:2px solid black;vertical-align:middle"> placeholder release name 1 </td>
+% <td>  <br> 1.000&nbsp;s <br> NaN&nbsp;s </td>
 % <td>  </td>
 % <td>  </td>
 % </tr>
 % <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2020a </td>
-% <td> (W10) <br> 113&nbsp;% <br> 101&nbsp;% </td>
+% <td style="border:2px solid black;vertical-align:middle"> placeholder release name 2 </td>
 % <td>  </td>
 % <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2018a </td>
-% <td> (W10) <br> 136&nbsp;% <br> 95&nbsp;% </td>
-% <td>  <br> 121&nbsp;% <br> 77&nbsp;% </td>
 % <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2017b </td>
-% <td> (W10) <br> 144&nbsp;% <br> 96&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2017a </td>
-% <td> (W7) <br> 129&nbsp;% <br> 87&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2016a </td>
-% <td> (W10) <br> 144&nbsp;% <br> 103&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2015a </td>
-% <td> (W10) <br> 172&nbsp;% <br> 147&nbsp;% </td>
-% <td>  <br> 179&nbsp;% <br> 130&nbsp;% </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2013b </td>
-% <td> (W10) <br> 167&nbsp;% <br> 139&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2012b </td>
-% <td> (W10) <br> 223&nbsp;% <br> 142&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2011a </td>
-% <td> (W10) <br> 168&nbsp;% <br> 128&nbsp;% </td>
-% <td>  <br> 175&nbsp;% <br> 109&nbsp;% </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2010b </td>
-% <td>  </td>
-% <td>  <br> 168&nbsp;% <br> 102&nbsp;% </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2010a </td>
-% <td> (W7) <br> 190&nbsp;% <br> 112&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab R2007b </td>
-% <td> (W10) <br> 155&nbsp;% <br> 92&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab 7.1 (R14SP3) </td>
-% <td> (XP) <br> 127&nbsp;% <br> 72&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Matlab 6.5 (R13) </td>
-% <td> (W10) <br> 195&nbsp;% <br> 3&thinsp;136&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Octave 6.2.0 </td>
-% <td> (W10) <br> 489&nbsp;% <br> 565&nbsp;% </td>
-% <td>  </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Octave 5.2.0 </td>
-% <td> (W10) <br> 268&nbsp;% <br> 399&nbsp;% </td>
-% <td>  <br> 197&nbsp;% <br> 292&nbsp;% </td>
-% <td>  </td>
-% </tr>
-% <tr>
-% <td style="border:2px solid black;vertical-align:middle"> Octave 4.4.1 </td>
-% <td> (W10) <br> 255&nbsp;% <br> 410&nbsp;% </td>
-% <td>  </td>
-% <td>  <br> 425&nbsp;% <br> 621&nbsp;% </td>
 % </tr>
 % </table>
 % </html>
@@ -849,7 +679,7 @@ performance is likely an underestimation of the true performance.
 % Note that some of the functions in this tester might be different from the functions included in
 % the actual function. Usually this is done to allow triggering of certain errors.
 % 
-% Even without comments or blank lines and compressing the functions down as much as possible, the tester function is too large for this page. The full tester function (including all comments) can be found <https://web.archive.org/web/20210709184519/https://cdn-106.anonfiles.com/x7R2ye52u6/e7b999c9-1625856889/aaa___JSON___test.m here>.
+% Even without comments or blank lines and compressing the functions down as much as possible, the tester function is too large for this page. The full tester function (including all comments) can be found <https://web.archive.org/web/20220122102738/https://cdn-101.anonfiles.com/T3k9N2C8xb/06d3a2f8-1642847852/aaa___JSON___test.m here>.
 
 ##### SOURCE END #####
 --></body></html>

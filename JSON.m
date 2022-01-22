@@ -1,5 +1,42 @@
 function [object,ME]=JSON(str,varargin)
-% This interprets char array as JSON and returns an object the same size and shape as the builtin.
+%This interprets char array as JSON and returns an object the same size and shape as the builtin
+%
+% For very small files this function may be faster than the builtin, but for large files this
+% function may be much slower. See the performance section in the HTML doc for detailed timing
+% information.
+%
+% Syntax:
+%   object=JSON(str)
+%   object=JSON(___,options)
+%   object=JSON(___,Name,Value)
+%   [object,ME]=JSON(___)
+%
+% object:
+%   This contains the parsed object. This should closely match the output of the Matlab builtin
+%   jsondecode (see below for details).
+% ME:
+%   Errors during parsing will be caught. If a second output argument is specified, the error
+%   will not be rethrown, but the corresponding MException object is returned instead.
+% str:
+%   The JSON string to be parsed. This should be a char vector or a string/cellstr.
+% options:
+%   A struct with Name,Value parameters. Missing parameters are filled with the default.
+%   Note that the parameters are not validated.
+%
+% Name,Value parameters:
+%   EnforceValidNumber:
+%      With this boolean you can turn off the check if a number conforms to the JSON
+%      specifications. This will cause str2double to determine the validity. No error will be
+%      thrown in case of NaN output. [default=true;]
+%   ThrowErrorForInvalid:
+%      If this is false, no error will be throw if parsing fails. Instead, an empty array is
+%      returned. [default=nargout<2;]
+%   MaxRecursionDepth:
+%      This function is a recursive function. Under some rare conditions, Matlab/Octave might crash
+%      when the maximum recursion depth is reached, instead of throwing an error. This parameter
+%      allows you to stay on the safe side.
+%      The value can be set to inf to effectively remove the limit and only rely on the builtin
+%      safeguards. [default=101-numel(dbstack);]
 %
 % This was implemented using
 % https://www.ecma-international.org/wp-content/uploads/ECMA-404_2nd_edition_december_2017.pdf
@@ -25,8 +62,8 @@ function [object,ME]=JSON(str,varargin)
 %
 %/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%/%
 %|                                                                         |%
-%|  Version: 1.0.0                                                         |%
-%|  Date:    2021-09-07                                                    |%
+%|  Version: 1.0.1                                                         |%
+%|  Date:    2022-01-22                                                    |%
 %|  Author:  H.J. Wisselink                                                |%
 %|  Licence: CC by-nc-sa 4.0 ( creativecommons.org/licenses/by-nc-sa/4.0 ) |%
 %|  Email = 'h_j_wisselink*alumnus_utwente_nl';                            |%
@@ -322,7 +359,7 @@ for n=1:size(brace_content,2)
         fn=['x' fn]; %#ok<AGROW>
     end
     fn_=fn;counter=0;
-    while ismember(brace_content(1,1:(n-1)),fn)
+    while ismember(fn,brace_content(1,1:(n-1)))
         counter=counter+1;fn=sprintf('%s_%d',fn_,counter);
     end
     brace_content{1,n}=fn;
@@ -737,22 +774,40 @@ for n=1:numel(s)
 end
 str=horzcat(str{:});
 end
-function opts=parse_NameValue(default,varargin)
+function [opts,replaced]=parse_NameValue(default,varargin)
 %Match the Name,Value pairs to the default option, ignoring incomplete names and case.
 %
 %If this fails to find a match, this will throw an error with the offending name as the message.
+%
+%The second output is a cell containing the field names that have been set.
 
-opts=default;
+opts=default;replaced={};
 if nargin==1,return,end
 
 %Unwind an input struct to Name,Value pairs.
-if nargin==2
-    Names=fieldnames(varargin{1});
-    Values=struct2cell(varargin{1});
-else
-    %Wrap in cellstr to account for strings (this also deals with the fun(Name=Value) syntax).
-    Names=cellstr(varargin(1:2:end));
-    Values=varargin(2:2:end);
+try
+    struct_input=numel(varargin)==1 && isa(varargin{1},'struct');
+    NameValue_input=mod(numel(varargin),2)==0 && all(...
+        cellfun('isclass',varargin(1:2:end),'char'  ) | ...
+        cellfun('isclass',varargin(1:2:end),'string')   );
+    if ~( struct_input || NameValue_input )
+        error('trigger')
+    end
+    if nargin==2
+        Names=fieldnames(varargin{1});
+        Values=struct2cell(varargin{1});
+    else
+        %Wrap in cellstr to account for strings (this also deals with the fun(Name=Value) syntax).
+        Names=cellstr(varargin(1:2:end));
+        Values=varargin(2:2:end);
+    end
+    if ~iscellstr(Names),error('trigger');end %#ok<ISCLSTR>
+catch
+    %If this block errors, that is either because a missing Value with the Name,Value syntax, or
+    %because the struct input is not a struct, or because an attempt was made to mix the two
+    %styles. In future versions of this functions an effort might be made to handle such cases.
+    error('parse_NameValue:MixedOrBadSyntax',...
+        'Optional inputs must be entered as Name,Value pairs or as struct.')
 end
 
 %Convert the real fieldnames to a char matrix.
@@ -764,10 +819,11 @@ end
 d_Names2=vertcat(d_Names2{:});
 
 %Attempt to match the names.
+replaced=false(size(d_Names1));
 for n=1:numel(Names)
     name=lower(Names{n});
     tmp=d_Names2(:,1:min(end,numel(name)));
-    non_matching=numel(name)-sum(cumprod(tmp==repmat(name,size(tmp,1),1),2),2);
+    non_matching=numel(name)-sum(cumprod(double(tmp==repmat(name,size(tmp,1),1)),2),2);
     match_idx=find(non_matching==0);
     if numel(match_idx)~=1
         error('parse_NameValue:NonUniqueMatch',Names{n})
@@ -775,7 +831,10 @@ for n=1:numel(Names)
     
     %Store the Value in the output struct.
     opts.(d_Names1{match_idx})=Values{n};
+    
+    replaced(match_idx)=true;
 end
+replaced=d_Names1(replaced);
 end
 function [id,msg,stack,trace,no_op]=parse_warning_error_redirect_inputs(varargin)
 no_op=false;
@@ -822,7 +881,7 @@ else
         %  error_(options,id,msg,A1,...,An)
         id=varargin{1};
         msg=varargin{2};
-        if nargin>3
+        if nargin>2
             A1_An=varargin(3:end);
             msg=sprintf(msg,A1_An{:});
         end
@@ -901,7 +960,7 @@ if isempty(states)
         'enable','disable';...
         'enabled','disabled'};
     try
-        states(end+1,:)=eval('{"on","off"}');
+        states(end+1,:)=eval('{"on","off"}'); %#ok<EVLCS> 
     catch
     end
 end
@@ -1076,17 +1135,17 @@ end
 end
 function [unicode,isUTF8,assumed_UTF8]=UTF8_to_unicode(UTF8,print_to)
 %Convert UTF-8 to the code points stored as uint32
-%Plane 16 goes up to 10FFFF, so anything larger than uint16 will be able to hold every code point.
+% Plane 16 goes up to 10FFFF, so anything larger than uint16 will be able to hold every code point.
 %
-%If there a second output argument, this function will not return an error if there are encoding
-%error. The second output will contain the attempted conversion, while the first output will
-%contain the original input converted to uint32.
+% If there a second output argument, this function will not return an error if there are encoding
+% error. The second output will contain the attempted conversion, while the first output will
+% contain the original input converted to uint32.
 %
-%The second input can be used to also print the error to a GUI element or to a text file.
+% The second input can be used to also print the error to a GUI element or to a text file.
 if nargin<2,print_to=[];end
 return_on_error= nargout==1 ;
 
-UTF8=uint32(UTF8);
+UTF8=uint32(reshape(UTF8,1,[]));% Force row vector.
 [assumed_UTF8,flag,ME]=UTF8_to_unicode_internal(UTF8,return_on_error);
 if strcmp(flag,'success')
     isUTF8=true;
@@ -1096,11 +1155,10 @@ elseif strcmp(flag,'error')
     if return_on_error
         error_(print_to,ME)
     end
-    unicode=UTF8;%Return input unchanged (apart from casting to uint32).
+    unicode=UTF8; % Return input unchanged (apart from casting to uint32).
 end
 end
 function [UTF8,flag,ME]=UTF8_to_unicode_internal(UTF8,return_on_error)
-
 flag='success';
 ME=struct('identifier','HJW:UTF8_to_unicode:notUTF8','message','Input is not UTF-8.');
 
@@ -1138,12 +1196,12 @@ for bytes=4:-1:2
         S2=mat2cell(multibyte,ones(size(multibyte,1),1),bytes);
         for n=1:numel(S2)
             bin=dec2bin(double(S2{n}))';
-            %To view the binary data, you can use this: bin=bin(:)';
-            %Remove binary header (3 byte example):
-            %1110xxxx10xxxxxx10xxxxxx
-            %    xxxx  xxxxxx  xxxxxx
+            % To view the binary data, you can use this: bin=bin(:)';
+            % Remove binary header (3 byte example):
+            % 1110xxxx10xxxxxx10xxxxxx
+            %     xxxx  xxxxxx  xxxxxx
             if ~strcmp(header_bits,bin(header_locs))
-                %Check if the byte headers match the UTF-8 standard.
+                % Check if the byte headers match the UTF-8 standard.
                 flag='error';
                 if return_on_error,return,end
                 continue %leave unencoded
@@ -1152,34 +1210,34 @@ for bytes=4:-1:2
             if ~isOctave
                 S3=uint32(bin2dec(bin  ));
             else
-                S3=uint32(bin2dec(bin.'));%Octave needs an extra transpose.
+                S3=uint32(bin2dec(bin.'));% Octave needs an extra transpose.
             end
-            %Perform actual replacement.
+            % Perform actual replacement.
             UTF8=PatternReplace(UTF8,S2{n},S3);
         end
     end
 end
 end
 function [opts,ME]=validate_print_to__options(opts_in,ME)
-%If any input is invalid, this returns an empty array and sets ME.message.
+% If any input is invalid, this returns an empty array and sets ME.message.
 %
-%Input struct:
-%options.print_to_con=true;   % or false
-%options.print_to_fid=fid;    % or []
-%options.print_to_obj=h_obj;  % or []
-%options.print_to_fcn=struct; % or []
+% Input struct:
+% options.print_to_con=true;   % or false
+% options.print_to_fid=fid;    % or []
+% options.print_to_obj=h_obj;  % or []
+% options.print_to_fcn=struct; % or []
 %
-%Output struct:
-%options.fid
-%options.obj
-%options.fcn.h
-%options.fcn.data
-%options.boolean.con
-%options.boolean.fid
-%options.boolean.obj
-%options.boolean.fcn
+% Output struct:
+% options.fid
+% options.obj
+% options.fcn.h
+% options.fcn.data
+% options.boolean.con
+% options.boolean.fid
+% options.boolean.obj
+% options.boolean.fcn
 
-%Set defaults.
+% Set defaults.
 if nargin<2,ME=struct;end
 if ~isfield(opts_in,'print_to_con'),opts_in.print_to_con=[];end
 if ~isfield(opts_in,'print_to_fid'),opts_in.print_to_fid=[];end
@@ -1187,13 +1245,14 @@ if ~isfield(opts_in,'print_to_obj'),opts_in.print_to_obj=[];end
 if ~isfield(opts_in,'print_to_fcn'),opts_in.print_to_fcn=[];end
 print_to_con_default=true; % Unless a valid fid, obj, or fcn is specified.
 
-%Initalize output.
+% Initialize output.
 opts=struct;
 
-%Parse the fid. We can use ftell to determine if fprintf is going to fail.
+% Parse the fid. We can use ftell to determine if fprintf is going to fail.
 item=opts_in.print_to_fid;
 if isempty(item)
     opts.boolean.fid=false;
+    opts.fid=[];
 else
     print_to_con_default=false;
     opts.boolean.fid=true;
@@ -1208,20 +1267,21 @@ else
     end
 end
 
-%Parse the object handle. Retrieving from multiple objects at once works, but writing that output
-%back to multiple objects doesn't work if Strings are dissimilar.
+% Parse the object handle. Retrieving from multiple objects at once works, but writing that output
+% back to multiple objects doesn't work if Strings are dissimilar.
 item=opts_in.print_to_obj;
 if isempty(item)
     opts.boolean.obj=false;
+    opts.obj=[];
 else
     print_to_con_default=false;
     opts.boolean.obj=true;
     opts.obj=item;
     for n=1:numel(item)
         try
-            txt=get(item(n),'String'    ); %See if this triggers an error.
-            set(    item(n),'String','' ); %Test if property is writeable.
-            set(    item(n),'String',txt); %Restore original content.
+            txt=get(item(n),'String'    ); % See if this triggers an error.
+            set(    item(n),'String','' ); % Test if property is writable.
+            set(    item(n),'String',txt); % Restore original content.
         catch
             ME.message=['Invalid print_to_obj parameter:',char(10),...
                 'should be a handle to an object with a writeable String property.']; %#ok<CHARTEN>
@@ -1230,16 +1290,16 @@ else
     end
 end
 
-%Parse the function handles.
+% Parse the function handles.
 item=opts_in.print_to_fcn;
 if isempty(item)
     opts.boolean.fcn=false;
+    opts.fcn=[];
 else
     print_to_con_default=false;
     try
         for n=1:numel(item)
-            if ~ismember(class(item(n).h),{'function_handle','inline'}) ...
-                    || numel(item(n).h)~=1
+            if ~ismember(class(item(n).h),{'function_handle','inline'}) || numel(item(n).h)~=1
                 error('trigger error')
             end
         end
@@ -1251,8 +1311,8 @@ else
     end
 end
 
-%Parse the logical that determines if a warning will be printed to the command window.
-%This is true by default, unless an fid, obj, or fcn is specified.
+% Parse the logical that determines if a warning will be printed to the command window.
+% This is true by default, unless an fid, obj, or fcn is specified.
 item=opts_in.print_to_con;
 if isempty(item)
     opts.boolean.con=print_to_con_default;
